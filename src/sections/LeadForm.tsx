@@ -14,7 +14,7 @@ export default function LeadForm({
   return (
     <div className="pt-[150px] flex flex-col gap-3">
       <Question
-        label="Get your results!"
+        label="Find out how much you can save!"
         isBlurred={isBlurred}
         isChecked={false}
       />

@@ -13,11 +13,11 @@ export default function Hero({
   return (
     <section className="w-[980px] mx-auto px-5 py-[150px] flex flex-col gap-8 max-md:gap-5 max-md:py-[50px] max-md:w-auto">
       <h1 className="text-6xl max-md:text-4xl font-black text-gray-700">
-        30-SECOND <br />
-        ASSESSMENT
+        END-OF-YEAR<br />
+        SAVINGS CALCULATOR
       </h1>
       <p className="text-2xl max-md:text-xl text-gray-500 font-light leading-10">
-        Find out if DentalEMR is the right fit for you.
+        Find out how much you can save in 10 seconds!
       </p>
       <div className="flex gap-3">
         <Button

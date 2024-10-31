@@ -30,6 +30,7 @@ export default function QuizContainer({
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasAAEID, setHasAAEID] = useState(false);
+  const [savings, setSavings] = useState("");
 
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   const leadFormRef = useRef<HTMLDivElement | null>(null);
@@ -75,16 +76,40 @@ export default function QuizContainer({
     return false;
   }
 
+  function getSavings(answer1: string, answer2: string): string {
+    if (answer1 === "new-practice") {
+      switch (answer2) {
+        case "1":
+          return "$1500 - $1950";
+        case "2":
+          return "$1500 - $2282";
+        case "3-plus":
+          return "$1500 - $2928+";
+      }
+    } else if (answer1 === "established-practice") {
+      switch (answer2) {
+        case "1":
+          return "$1500 - $3000";
+        case "2":
+          return "$1500 - $3332";
+        case "3-plus":
+          return "$1500 - $3978+";
+      }
+    }
+    return "Invalid input";
+  }
+
   async function submitResults() {
     if (!validateEmail()) return;
 
     setIsLoading(true);
 
+    setSavings(getSavings(answers[0].value, answers[1].value));
+
     axios
       .post("https://dentalemr.com/wp-json/dqp/v1/complete-assessment", {
         email,
         answers,
-        hasAAEID,
       })
       .then(() => {
         axios
@@ -99,7 +124,7 @@ export default function QuizContainer({
                 },
               ],
               context: {
-                pageUri: "dentalemr.com/apps/assessment",
+                pageUri: "dentalemr.com/apps/eoy-savings-calculator-app",
                 pageName: "Quiz App",
               },
             }
@@ -118,7 +143,7 @@ export default function QuizContainer({
   return isError ? (
     <ErrorScreen />
   ) : isSuccessful ? (
-    <SuccessScreen />
+    <SuccessScreen savings={savings} />
   ) : (
     <div className="flex flex-col items-start gap-10 max-w-[980px] mx-auto pb-[500px] px-5">
       {questions.map((item, index) => (
@@ -150,7 +175,7 @@ export default function QuizContainer({
       <Button
         onClick={submitResults}
         style="accent"
-        label={isLoading ? "Please wait" : "Complete Assessment"}
+        label={isLoading ? "Please wait" : "Calculate"}
         isLoading={isLoading}
       />
     </div>
@@ -168,24 +193,25 @@ function ErrorScreen(): JSX.Element {
   );
 }
 
-function SuccessScreen(): JSX.Element {
+function SuccessScreen({ savings }: { savings: string }): JSX.Element {
   return (
     <div className="fixed top-0 left-0 z-20 h-[100vh] w-[100vw] flex items-center justify-center flex-col gap-4 max-md:gap-4 px-8">
       <ConfettiExplosion zIndex={100} />
       <div className="animate-splash-circle h-[100%] w-[100%] bg-primary rounded-full absolute top-0 left-0 -z-10"></div>
-      <div className="w-[450px] -my-[100px] max-md:-my-[80px] max-md:w-[300px]">
-        <Lottie animationData={successLottie} loop={false} />
+      <div className="w-[350px] max-md:w-[200px]">
+        <Lottie animationData={successLottie} loop={true} />
       </div>
+
+      <p className="text-center font-light text-lg max-md:text-base text-white">
+        You will save
+      </p>
       <h1 className="text-center text-6xl font-bold max-md:text-3xl text-white">
-        Boom!
+        {savings}
       </h1>
       <div className="flex flex-col gap-1">
         <p className="text-center font-light text-lg max-md:text-base text-white/60">
-          Looks like we're the perfect match to assist you in meeting your
-          goals!
-        </p>
-        <p className="text-center font-light text-lg max-md:text-base text-white/60">
-          What's next? Schedule a test drive so you can experience DentalEMR for
+          Wow, that's a lot!
+          <br /> Schedule a test drive so you can experience DentalEMR for
           yourself.
         </p>
       </div>

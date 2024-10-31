@@ -17,8 +17,8 @@ function App() {
     ReactGA.initialize(TRACKING_ID);
     ReactGA.send({
       hitType: "pageview",
-      page: "/apps/assessment",
-      title: "DentalEMR Assessment",
+      page: "/apps/eoy-savings-calculator-app",
+      title: "DentalEMR EOY Savings Calculator App",
     });
   }, []);
 
