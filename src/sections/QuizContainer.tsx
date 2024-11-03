@@ -29,7 +29,7 @@ export default function QuizContainer({
   const [isError, setIsError] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasAAEID, setHasAAEID] = useState(false);
+  const [, setHasAAEID] = useState(false);
   const [savings, setSavings] = useState("");
 
   const refs = useRef<(HTMLDivElement | null)[]>([]);
