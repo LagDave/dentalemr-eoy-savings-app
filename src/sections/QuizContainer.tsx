@@ -163,7 +163,7 @@ function SuccessScreen({ savings }: { savings: string }): JSX.Element {
       <div className="mt-4">
         <Button
           href="https://dentalemr.com/request-your-free-demo/"
-          label="Get Started"
+          label="Lock in Your Savings!"
           style="accent"
         />
       </div>
