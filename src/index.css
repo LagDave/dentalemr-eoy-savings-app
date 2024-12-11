@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Toastify__toast {
+  font-family: sans-serif; /* Replace with your desired font */
+  font-size: 14px; /* Adjust font size */
+  color: #434343;
+}

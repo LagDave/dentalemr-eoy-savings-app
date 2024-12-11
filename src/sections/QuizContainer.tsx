@@ -7,6 +7,8 @@ import axios from "axios";
 import ConfettiExplosion from "react-confetti-explosion";
 import Lottie from "lottie-react";
 import successLottie from "../assets/success-lottie.json";
+import ReCAPTCHA from "react-google-recaptcha";
+import { toast } from "react-toastify";
 
 type QuizContainerProps = {
   onProgressChange: (percentage: number) => void;
@@ -31,6 +33,12 @@ export default function QuizContainer({
   const [isLoading, setIsLoading] = useState(false);
   const [, setHasAAEID] = useState(false);
   const [savings, setSavings] = useState("");
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token);
+  };
 
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   const leadFormRef = useRef<HTMLDivElement | null>(null);
@@ -100,7 +108,8 @@ export default function QuizContainer({
   }
 
   async function submitResults() {
-    if (!validateEmail()) return;
+    if (!captchaToken) return toast.warn("Please complete captcha first.");
+    if (!validateEmail()) return toast.warn("Please enter a valid email.");
 
     setIsLoading(true);
 
@@ -172,6 +181,10 @@ export default function QuizContainer({
           isBlurred={currentItem < questions.length}
         />
       </div>
+      <ReCAPTCHA
+        sitekey="6LeDy5gqAAAAAMFkGHvNyv18t13j7Chgv2vZcdW-"
+        onChange={handleCaptchaChange}
+      />
       <Button
         onClick={submitResults}
         style="accent"
@@ -201,7 +214,6 @@ function SuccessScreen({ savings }: { savings: string }): JSX.Element {
       <div className="w-[350px] max-md:w-[200px]">
         <Lottie animationData={successLottie} loop={true} />
       </div>
-
       <p className="text-center font-light text-lg max-md:text-base text-white">
         You will save
       </p>
